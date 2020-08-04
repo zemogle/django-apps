@@ -15,6 +15,6 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='activity',
             name='original_author',
-            field=models.ForeignKey(blank=True, null=True, verbose_name='Original Author of the activity (if not the authors listed above', to='institutions.Person'),
+            field=models.ForeignKey(blank=True, null=True, verbose_name='Original Author of the activity (if not the authors listed above', to='institutions.Person', on_delete=models.CASCADE),
         ),
     ]

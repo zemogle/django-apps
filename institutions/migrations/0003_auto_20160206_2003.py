@@ -26,7 +26,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='person',
             name='institution',
-            field=models.ForeignKey(to='institutions.Institution', null=True),
+            field=models.ForeignKey(to='institutions.Institution', null=True, on_delete=models.CASCADE),
         ),
         migrations.AddField(
             model_name='person',

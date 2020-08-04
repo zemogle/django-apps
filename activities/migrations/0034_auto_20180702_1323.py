@@ -14,13 +14,13 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='activity',
             name='group',
-            field=models.ForeignKey(to='activities.MetadataOption', verbose_name='Group or individual activity', default=18, related_name='+'),
+            field=models.ForeignKey(to='activities.MetadataOption', verbose_name='Group or individual activity', default=18, related_name='+', on_delete=models.CASCADE),
             preserve_default=False,
         ),
         migrations.AlterField(
             model_name='activity',
             name='learning',
-            field=models.ForeignKey(to='activities.MetadataOption', verbose_name='type of learning activity', help_text='Enquiry-based learning model', related_name='learning+'),
+            field=models.ForeignKey(to='activities.MetadataOption', verbose_name='type of learning activity', help_text='Enquiry-based learning model', related_name='learning+', on_delete=models.CASCADE),
         ),
         migrations.AlterField(
             model_name='activity',

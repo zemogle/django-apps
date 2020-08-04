@@ -1,5 +1,5 @@
 from django.db import models
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from ckeditor.fields import RichTextField
 from sorl.thumbnail import ImageField
 from parler.models import TranslatableModel, TranslatedFieldsModel
@@ -22,7 +22,7 @@ class Institution(TranslatableModel):
     name = models.CharField(unique=True, blank=False, max_length=255, help_text='Short (and commonly used) name', )
     slug = models.SlugField(unique=True, blank=False, max_length=255, help_text='The Slug must be unique, and closely match the title for better SEO; it is used as part of the URL.', )
     fullname = models.CharField(max_length=255, blank=True, help_text='If set, the full name will be used in some places instead of the name', )
-    location = models.ForeignKey(Location, blank=True, null=True, )
+    location = models.ForeignKey(Location, blank=True, null=True, on_delete=models.CASCADE )
     url = models.URLField(blank=True, null=True, max_length=255, )
     logo = ImageField(null=True, blank=True, upload_to='institutions')
     spacescoop_count = models.IntegerField(default=0, editable=False, )
@@ -46,7 +46,7 @@ class Institution(TranslatableModel):
 
 
 class InstitutionTranslation(TranslatedFieldsModel):
-    master = models.ForeignKey(Institution, related_name='translations', null=True)
+    master = models.ForeignKey(Institution, related_name='translations', null=True, on_delete=models.CASCADE)
     description = RichTextField(blank=True, null=True, config_name='small', help_text='Text to appear in Institution page')
 
     class Meta:
@@ -60,7 +60,7 @@ class Person(models.Model):
     name = models.CharField(blank=False, max_length=255)
     citable_name = models.CharField(blank=True, max_length=255, help_text='Required for astroEDU activities')
     email = models.EmailField(blank=False, max_length=255)
-    institution = models.ForeignKey(Institution, blank=True, null=True)
+    institution = models.ForeignKey(Institution, blank=True, null=True, on_delete=models.CASCADE)
     spaceawe_partner = models.BooleanField(default=False, verbose_name='Space Awareness partner')
     spaceawe_node = models.BooleanField(default=False, verbose_name='Space Awareness node')
 

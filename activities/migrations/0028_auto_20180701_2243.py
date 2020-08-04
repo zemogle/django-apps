@@ -19,12 +19,12 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='activity',
             name='cost',
-            field=models.ForeignKey(blank=True, null=True, related_name='+', to='activities.MetadataOption', verbose_name='Cost per student'),
+            field=models.ForeignKey(blank=True, null=True, related_name='+', to='activities.MetadataOption', verbose_name='Cost per student', on_delete=models.CASCADE),
         ),
         migrations.AlterField(
             model_name='activity',
             name='group',
-            field=models.ForeignKey(blank=True, null=True, related_name='+', to='activities.MetadataOption', verbose_name='Group or individual activity'),
+            field=models.ForeignKey(blank=True, null=True, related_name='+', to='activities.MetadataOption', verbose_name='Group or individual activity', on_delete=models.CASCADE),
         ),
         migrations.AlterField(
             model_name='activity',
@@ -34,7 +34,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='activity',
             name='supervised',
-            field=models.ForeignKey(blank=True, null=True, related_name='+', to='activities.MetadataOption', verbose_name='Supervised for safety'),
+            field=models.ForeignKey(blank=True, null=True, related_name='+', to='activities.MetadataOption', verbose_name='Supervised for safety', on_delete=models.CASCADE),
         ),
         migrations.AlterField(
             model_name='activitytranslation',

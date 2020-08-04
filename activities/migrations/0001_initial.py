@@ -58,7 +58,7 @@ class Migration(migrations.Migration):
                 ('main_visual', models.BooleanField(help_text='The main visual is used as the cover image.', default=False)),
                 ('show', models.BooleanField(help_text='Include in attachment list.', verbose_name='Show', default=False)),
                 ('position', models.PositiveSmallIntegerField(help_text='Used to define the order of attachments in the attachment list.', verbose_name='Position', default=0)),
-                ('hostmodel', models.ForeignKey(to='activities.Activity')),
+                ('hostmodel', models.ForeignKey(to='activities.Activity', on_delete=models.CASCADE)),
             ],
             options={
                 'ordering': ['-show', 'position', 'id'],
@@ -80,8 +80,8 @@ class Migration(migrations.Migration):
             name='AuthorInstitution',
             fields=[
                 ('id', models.AutoField(auto_created=True, verbose_name='ID', primary_key=True, serialize=False)),
-                ('activity', models.ForeignKey(related_name='authors', to='activities.Activity')),
-                ('author', models.ForeignKey(to='activities.Person')),
+                ('activity', models.ForeignKey(related_name='authors', to='activities.Activity', on_delete=models.CASCADE)),
+                ('author', models.ForeignKey(to='activities.Person', on_delete=models.CASCADE)),
             ],
         ),
         migrations.CreateModel(
@@ -137,7 +137,7 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(auto_created=True, verbose_name='ID', primary_key=True, serialize=False)),
                 ('repo', models.CharField(max_length=50)),
                 ('url', models.URLField(max_length=255)),
-                ('activity', models.ForeignKey(to='activities.Activity')),
+                ('activity', models.ForeignKey(to='activities.Activity', on_delete=models.CASCADE)),
             ],
             options={
                 'ordering': ['repo'],
@@ -151,7 +151,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='authorinstitution',
             name='institution',
-            field=models.ForeignKey(to='activities.Institution'),
+            field=models.ForeignKey(to='activities.Institution', on_delete=models.CASCADE),
         ),
         migrations.AddField(
             model_name='activity',
@@ -161,17 +161,17 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='activity',
             name='cost',
-            field=models.ForeignKey(null=True, to='activities.MetadataOption', blank=True, related_name='+'),
+            field=models.ForeignKey(null=True, to='activities.MetadataOption', blank=True, related_name='+', on_delete=models.CASCADE),
         ),
         migrations.AddField(
             model_name='activity',
             name='group',
-            field=models.ForeignKey(null=True, to='activities.MetadataOption', blank=True, related_name='+'),
+            field=models.ForeignKey(null=True, to='activities.MetadataOption', blank=True, related_name='+', on_delete=models.CASCADE),
         ),
         migrations.AddField(
             model_name='activity',
             name='learning',
-            field=models.ForeignKey(to='activities.MetadataOption', help_text='Enquiry-based learning model', related_name='+', verbose_name='type of learning activity'),
+            field=models.ForeignKey(to='activities.MetadataOption', help_text='Enquiry-based learning model', related_name='+', verbose_name='type of learning activity', on_delete=models.CASCADE),
         ),
         migrations.AddField(
             model_name='activity',
@@ -181,7 +181,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='activity',
             name='location',
-            field=models.ForeignKey(null=True, to='activities.MetadataOption', blank=True, related_name='+'),
+            field=models.ForeignKey(null=True, to='activities.MetadataOption', blank=True, related_name='+', on_delete=models.CASCADE),
         ),
         migrations.AddField(
             model_name='activity',
@@ -191,11 +191,11 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='activity',
             name='supervised',
-            field=models.ForeignKey(null=True, to='activities.MetadataOption', blank=True, related_name='+'),
+            field=models.ForeignKey(null=True, to='activities.MetadataOption', blank=True, related_name='+', on_delete=models.CASCADE),
         ),
         migrations.AddField(
             model_name='activity',
             name='time',
-            field=models.ForeignKey(related_name='+', to='activities.MetadataOption'),
+            field=models.ForeignKey(related_name='+', to='activities.MetadataOption', on_delete=models.CASCADE),
         ),
     ]

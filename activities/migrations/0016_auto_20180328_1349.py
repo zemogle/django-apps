@@ -26,7 +26,7 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(serialize=False, primary_key=True, verbose_name='ID', auto_created=True)),
                 ('language_code', models.CharField(db_index=True, verbose_name='Language', max_length=15)),
                 ('description', models.TextField(verbose_name='General introduction', blank=True)),
-                ('master', models.ForeignKey(to='activities.JourneyCategory', null=True, related_name='translations')),
+                ('master', models.ForeignKey(to='activities.JourneyCategory', null=True, related_name='translations', on_delete=models.CASCADE)),
             ],
             options={
                 'abstract': False,
@@ -42,7 +42,7 @@ class Migration(migrations.Migration):
                 ('release_date', models.DateTimeField()),
                 ('embargo_date', models.DateTimeField(null=True, blank=True)),
                 ('activities', models.ManyToManyField(to='activities.Activity', blank=True, related_name='_journeychapter_activities_+')),
-                ('journey', models.ForeignKey(to='activities.JourneyCategory')),
+                ('journey', models.ForeignKey(to='activities.JourneyCategory', on_delete=models.CASCADE)),
             ],
             options={
                 'abstract': False,
@@ -56,7 +56,7 @@ class Migration(migrations.Migration):
                 ('title', models.CharField(verbose_name='Chapter title', max_length=255)),
                 ('slug', models.SlugField(unique=True)),
                 ('description', models.TextField(verbose_name='Chapter introduction', blank=True)),
-                ('master', models.ForeignKey(to='activities.JourneyChapter', null=True, related_name='translations')),
+                ('master', models.ForeignKey(to='activities.JourneyChapter', null=True, related_name='translations', on_delete=models.CASCADE)),
             ],
         ),
         migrations.AlterUniqueTogether(

@@ -14,19 +14,19 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='activity',
             name='cost',
-            field=models.ForeignKey(related_name='+', verbose_name='Cost per student', to='activities.MetadataOption', default=226),
+            field=models.ForeignKey(related_name='+', verbose_name='Cost per student', to='activities.MetadataOption', default=226, on_delete=models.CASCADE),
             preserve_default=False,
         ),
         migrations.AlterField(
             model_name='activity',
             name='location',
-            field=models.ForeignKey(related_name='+', to='activities.MetadataOption', default=229),
+            field=models.ForeignKey(related_name='+', to='activities.MetadataOption', default=229, on_delete=models.CASCADE),
             preserve_default=False,
         ),
         migrations.AlterField(
             model_name='activity',
             name='supervised',
-            field=models.ForeignKey(related_name='+', verbose_name='Supervised for safety', to='activities.MetadataOption', default=20),
+            field=models.ForeignKey(related_name='+', verbose_name='Supervised for safety', to='activities.MetadataOption', default=20, on_delete=models.CASCADE),
             preserve_default=False,
         ),
     ]

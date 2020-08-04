@@ -19,7 +19,7 @@ class Migration(migrations.Migration):
                 ('main_visual', models.BooleanField(default=False, help_text='The main visual is used as the cover image.')),
                 ('show', models.BooleanField(default=False, verbose_name='Show', help_text='Include in attachment list.')),
                 ('position', models.PositiveSmallIntegerField(default=0, verbose_name='Position', help_text='Used to define the order of attachments in the attachment list.')),
-                ('hostmodel', models.ForeignKey(to='activities.Activity')),
+                ('hostmodel', models.ForeignKey(to='activities.Activity', on_delete=models.CASCADE)),
             ],
             options={
                 'ordering': ['-show', 'position', 'id'],
@@ -32,7 +32,7 @@ class Migration(migrations.Migration):
                 ('language_code', models.CharField(max_length=15, verbose_name='Language', db_index=True)),
                 ('title', models.CharField(max_length=255, blank=True)),
                 ('file', models.FileField(upload_to=activities.models.get_translated_file_path_step, blank=True)),
-                ('master', models.ForeignKey(related_name='translations', to='activities.LanguageAttachment', null=True)),
+                ('master', models.ForeignKey(related_name='translations', to='activities.LanguageAttachment', null=True, on_delete=models.CASCADE)),
             ],
             options={
                 'default_permissions': (),

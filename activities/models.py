@@ -4,7 +4,7 @@ from urllib.parse import urlparse
 from ckeditor.fields import RichTextField
 from django.conf import settings
 from django.db import models
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from parler.models import TranslatableModel, TranslatedFieldsModel
 from parler.managers import TranslatableManager, TranslatableQuerySet
 from autoslug import AutoSlugField
@@ -109,11 +109,11 @@ class Activity(TranslatableModel, PublishingModel, SpaceaweModel, SearchModel):
 
     age = models.ManyToManyField(MetadataOption, limit_choices_to={'group': 'age'}, related_name='age+', verbose_name='Age range')
     level = models.ManyToManyField(MetadataOption, limit_choices_to={'group': 'level'}, related_name='level+', help_text='Specify at least one of "Age" and "Level". ', verbose_name='Education level')
-    time = models.ForeignKey(MetadataOption, limit_choices_to={'group': 'time'}, related_name='+')
-    group = models.ForeignKey(MetadataOption, limit_choices_to={'group': 'group'}, related_name='+', verbose_name='Group or individual activity', null=True)
-    supervised = models.ForeignKey(MetadataOption, limit_choices_to={'group': 'supervised'}, related_name='+', verbose_name='Supervised for safety')
-    cost = models.ForeignKey(MetadataOption, limit_choices_to={'group': 'cost'}, null=True, verbose_name='Cost per student')
-    location = models.ForeignKey(MetadataOption, limit_choices_to={'group': 'location'}, related_name='+', null=True)
+    time = models.ForeignKey(MetadataOption, limit_choices_to={'group': 'time'}, related_name='+', on_delete=models.CASCADE)
+    group = models.ForeignKey(MetadataOption, limit_choices_to={'group': 'group'}, related_name='+', verbose_name='Group or individual activity', null=True, on_delete=models.CASCADE)
+    supervised = models.ForeignKey(MetadataOption, limit_choices_to={'group': 'supervised'}, related_name='+', verbose_name='Supervised for safety', on_delete=models.CASCADE)
+    cost = models.ForeignKey(MetadataOption, limit_choices_to={'group': 'cost'}, null=True, verbose_name='Cost per student', on_delete=models.CASCADE)
+    location = models.ForeignKey(MetadataOption, limit_choices_to={'group': 'location'}, related_name='+', null=True, on_delete=models.CASCADE)
     skills = models.ManyToManyField(MetadataOption, limit_choices_to={'group': 'skills'}, related_name='skills+', verbose_name='core skills', )
     learning = models.ManyToManyField(MetadataOption, limit_choices_to={'group': 'learning'}, related_name='learning+', verbose_name='type of learning activity', help_text='Enquiry-based learning model')
 
@@ -125,11 +125,11 @@ class Activity(TranslatableModel, PublishingModel, SpaceaweModel, SearchModel):
 
     # version 9
     affiliation = models.CharField(blank=False, max_length=255, verbose_name='Affiliation or organisation')
-    country = models.ForeignKey(Location, verbose_name='Country(s)', null=True)
+    country = models.ForeignKey(Location, verbose_name='Country(s)', null=True, on_delete=models.CASCADE)
     email = models.CharField(max_length=64, verbose_name='Email address of corresponding author')
     suitable_group_size = models.IntegerField(verbose_name='Suitable group size')
     max_number_at_once = models.IntegerField(verbose_name='Maximum number of people at once')
-    original_author = models.ForeignKey(Person, blank=True, null=True, verbose_name='Original Author of the activity (if not the authors listed above')
+    original_author = models.ForeignKey(Person, blank=True, null=True, verbose_name='Original Author of the activity (if not the authors listed above', on_delete=models.CASCADE)
     language = models.CharField(max_length=64, blank=False, null=False)
     content_area_focus = models.ManyToManyField(MetadataOption, related_name='+', limit_choices_to={'group': 'content_area_focus'}, verbose_name='Content Area focus')
 
@@ -252,7 +252,7 @@ class Activity(TranslatableModel, PublishingModel, SpaceaweModel, SearchModel):
 
 
 class ActivityTranslation(TranslatedFieldsModel):
-    master = models.ForeignKey(Activity, related_name='translations', null=True)
+    master = models.ForeignKey(Activity, related_name='translations', null=True, on_delete=models.CASCADE)
     slug = AutoSlugField(max_length=200, populate_from='title', always_update=True, unique=False)
     title = models.CharField(max_length=255, db_index=True, verbose_name='Activity title', help_text='Title is shown in browser window. Use a good informative title, since search engines normally display the title on their result pages.')
     teaser = models.TextField(blank=False, max_length=140, help_text='250 words', verbose_name='Abstract')
@@ -291,9 +291,9 @@ class ActivityTranslation(TranslatedFieldsModel):
 
 
 class AuthorInstitution(models.Model):
-    activity = models.ForeignKey(Activity, related_name='authors', )
-    author = models.ForeignKey(Person)
-    institution = models.ForeignKey(Institution)
+    activity = models.ForeignKey(Activity, related_name='authors', on_delete=models.CASCADE)
+    author = models.ForeignKey(Person, on_delete=models.CASCADE)
+    institution = models.ForeignKey(Institution, on_delete=models.CASCADE)
 
     def display_name(self):
         # there were errors with no existing relations. Now display only relevant data
@@ -316,7 +316,7 @@ class LanguageAttachment(TranslatableModel):
     main_visual = models.BooleanField(default=False, help_text='The main visual is used as the cover image.')
     show = models.BooleanField(default=False, verbose_name='Show', help_text='Include in attachment list.')
     position = models.PositiveSmallIntegerField(default=0, verbose_name='Position', help_text='Used to define the order of attachments in the attachment list.')
-    hostmodel = models.ForeignKey(Activity)
+    hostmodel = models.ForeignKey(Activity, on_delete=models.CASCADE)
 
     def display_name(self):
         if self.title:
@@ -334,7 +334,7 @@ class LanguageAttachment(TranslatableModel):
 class LanguageAttachmentTranslation(TranslatedFieldsModel):
     title = models.CharField(max_length=255, blank=True)
     file = models.FileField(blank=True, upload_to=get_translated_file_path_step, )
-    master = models.ForeignKey(LanguageAttachment, related_name='translations', null=True)
+    master = models.ForeignKey(LanguageAttachment, related_name='translations', null=True, on_delete=models.CASCADE)
 
 
 class Attachment(models.Model):
@@ -343,7 +343,7 @@ class Attachment(models.Model):
     main_visual = models.BooleanField(default=False, help_text='The main visual is used as the cover image.')
     show = models.BooleanField(default=False, verbose_name='Show', help_text='Include in attachment list.')
     position = models.PositiveSmallIntegerField(default=0, verbose_name='Position', help_text='Used to define the order of attachments in the attachment list.')
-    hostmodel = models.ForeignKey(Activity)
+    hostmodel = models.ForeignKey(Activity, on_delete=models.CASCADE)
 
     def display_name(self):
         if self.title:
@@ -398,7 +398,7 @@ class Collection(TranslatableModel, PublishingModel):
 
 
 class CollectionTranslation(TranslatedFieldsModel):
-    master = models.ForeignKey(Collection, related_name='translations', null=True)
+    master = models.ForeignKey(Collection, related_name='translations', null=True, on_delete=models.CASCADE)
     title = models.CharField(blank=False, max_length=255)
     slug = models.SlugField(unique=True, db_index=True, help_text='Slug identifies the Collection; it is used as part of the URL.')
     description = models.TextField(blank=True, verbose_name='brief description', )
@@ -416,9 +416,9 @@ class Repository(models.Model):
 
 
 class RepositoryEntry(models.Model):
-    repo = models.ForeignKey(Repository, blank=False, null=True)
+    repo = models.ForeignKey(Repository, blank=False, null=True, on_delete=models.CASCADE)
     url = models.URLField(blank=False, max_length=255, )
-    activity = models.ForeignKey(Activity)
+    activity = models.ForeignKey(Activity, on_delete=models.CASCADE)
 
     def __str__(self):
         return '%s - %s' % (self.repo.name, self.url)
@@ -446,7 +446,7 @@ class JourneyCategory(TranslatableModel, PublishingModel):
 
 class JourneyCategoryTranslation(TranslatedFieldsModel):
 
-    master = models.ForeignKey(JourneyCategory, related_name='translations', null=True)
+    master = models.ForeignKey(JourneyCategory, related_name='translations', null=True, on_delete=models.CASCADE)
     title = models.CharField(blank=False, max_length=255, verbose_name='Title')
     # description = models.TextField(blank=True, verbose_name='General introduction')
     description = RichTextField(blank=True, null=True, verbose_name='General introduction', config_name='default')
@@ -466,7 +466,7 @@ class JourneyChapter(TranslatableModel):
     That's why there is another model/view.
     """
     activities = models.ManyToManyField(Activity, related_name='+', blank=True)
-    journey = models.ForeignKey(JourneyCategory)
+    journey = models.ForeignKey(JourneyCategory, on_delete=models.CASCADE)
     objects = JourneyChapterManager()
     position = models.IntegerField()
 
@@ -475,7 +475,7 @@ class JourneyChapter(TranslatableModel):
 
 
 class JourneyChapterTranslation(TranslatedFieldsModel):
-    master = models.ForeignKey(JourneyChapter, related_name='translations', null=True)
+    master = models.ForeignKey(JourneyChapter, related_name='translations', null=True, on_delete=models.CASCADE)
     title = models.CharField(blank=False, max_length=255, verbose_name='Chapter title')
     description = models.TextField(blank=True, verbose_name='Chapter introduction')
 
@@ -502,7 +502,7 @@ class Link(TranslatableModel):
         (TYPE_VIDEO, 'Video')
     )
 
-    activity = models.ForeignKey(Activity)
+    activity = models.ForeignKey(Activity, on_delete=models.CASCADE)
     type = models.IntegerField(choices=TYPES, default=TYPE_OTHER)
     main = models.BooleanField(default=False)
     show = models.BooleanField(default=True)
@@ -522,7 +522,7 @@ class Link(TranslatableModel):
 
 
 class LinkTranslation(TranslatedFieldsModel):
-    master = models.ForeignKey(Link, related_name='translations', null=True)
+    master = models.ForeignKey(Link, related_name='translations', null=True, on_delete=models.CASCADE)
     title = models.CharField(max_length=64, blank=True)
     url = models.CharField(max_length=255)
     description = models.CharField(max_length=255, blank=True)

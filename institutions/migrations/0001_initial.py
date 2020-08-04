@@ -46,7 +46,7 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(verbose_name='ID', primary_key=True, serialize=False, auto_created=True)),
                 ('language_code', models.CharField(db_index=True, max_length=15, verbose_name='Language')),
                 ('description', ckeditor.fields.RichTextField(help_text='Text to appear in Institution page', null=True, blank=True)),
-                ('master', models.ForeignKey(to='institutions.Institution', related_name='translations', null=True)),
+                ('master', models.ForeignKey(to='institutions.Institution', related_name='translations', null=True, on_delete=models.CASCADE)),
             ],
             options={
                 'verbose_name': 'institution translation',

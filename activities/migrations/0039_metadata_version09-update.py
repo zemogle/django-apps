@@ -12,11 +12,12 @@ def add(group, code, title, position):
 
 def update_learning(*args, **kwargs):
     m = MetadataOption.objects.filter(group='learning').aggregate(models.Max('position'))['position__max']
+    m = 0 if not m else m
     other = MetadataOption.objects.get(group='learning', code='other')
     position = other.position
     other.position = m + 1
     other.save()
-    add('learning', 'fun_activity', 'Fun activity', position)
+    #add('learning', 'fun_activity', 'Fun activity', position)
 
 class Migration(migrations.Migration):
     dependencies = [

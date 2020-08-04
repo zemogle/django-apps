@@ -11,9 +11,16 @@ def add(group, code, title, position):
 
 
 def update_learning(*args, **kwargs):
-    MetadataOption.objects.filter(group='learning', code__in=('obsolete_demonstration', 'obsolete_fun', 'obsolete_full', 'obsolete_partial', 'fun_activity')).delete()
-    MetadataOption.objects.filter(group='time', code='12h').delete()
+    # try:
+    #     MetadataOption.objects.filter(group='learning', code__in=('obsolete_demonstration', 'obsolete_fun', 'obsolete_full', 'obsolete_partial', 'fun_activity')).delete()
+    # except:
+    #     pass
+    # try:
+    #     MetadataOption.objects.filter(group='time', code='12h').delete()
+    # except:
+    #     pass
     m = MetadataOption.objects.filter(group='space_science').aggregate(models.Max('position'))['position__max']
+    m = 0 if not m else m
     add('space_science', 'other', 'Other', m + 1)
 
 class Migration(migrations.Migration):

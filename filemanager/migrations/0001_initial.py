@@ -38,7 +38,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='file',
             name='folder',
-            field=models.ForeignKey(blank=True, to='filemanager.Folder', null=True),
+            field=models.ForeignKey(blank=True, to='filemanager.Folder', null=True, on_delete=models.CASCADE),
             preserve_default=True,
         ),
     ]

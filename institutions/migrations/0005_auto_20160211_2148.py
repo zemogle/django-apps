@@ -52,7 +52,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='institution',
             name='location',
-            field=models.ForeignKey(null=True, blank=True, to='institutions.Location'),
+            field=models.ForeignKey(null=True, blank=True, to='institutions.Location', on_delete=models.CASCADE),
         ),
 
         migrations.RunPython(move_locations),

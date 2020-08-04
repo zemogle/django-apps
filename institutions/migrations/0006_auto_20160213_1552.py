@@ -14,6 +14,6 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='person',
             name='institution',
-            field=models.ForeignKey(blank=True, to='institutions.Institution', null=True),
+            field=models.ForeignKey(blank=True, to='institutions.Institution', null=True, on_delete=models.CASCADE),
         ),
     ]

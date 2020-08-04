@@ -26,7 +26,7 @@ class File(models.Model):
     title = models.CharField(blank=True, max_length=255, help_text='Leave blank to use filename')
     # file = models.FileField(blank=False, upload_to='files', )
     file = models.FileField(blank=False, upload_to=upload_to, )
-    folder = models.ForeignKey(Folder, blank=True, null=True)
+    folder = models.ForeignKey(Folder, blank=True, null=True, on_delete=models.CASCADE)
 
     def save(self, *args, **kwargs):
         if not self.title:

@@ -12,6 +12,7 @@ def add(group, code, title, position):
 
 def add_new_values(*args, **kwargs):
     i = MetadataOption.objects.filter(group='time').aggregate(models.Max('position'))['position__max']
+    i = 0 if not i else i
     i += 1; add('time', '3-6h', '3-6h', i)
     i += 1; add('time', '6-24h', '6-24h', i)
     i += 1; add('time', 'multiple_days', 'multiple days', i)
@@ -20,7 +21,8 @@ def add_new_values(*args, **kwargs):
     i += 1; add('time', 'many_months', 'over many months', i)
     i += 1; add('time', 'year_longer', 'a year or longer', i)
 
-    i = MetadataOption.objects.filter(group='learning').aggregate(models.Max('position'))['position__max']
+    i = MetadataOption.objects.filter(group='learning').aggregate(models.Max('position')).get('position__max')
+    i = 0 if not i else i
     i += 1; add('learning', 'guided_discovery_learning', 'Guided-discovery learning', i)
     i += 1; add('learning', 'structured_inquiry_learning', 'Structured-inquiry learning', i)
     i += 1; add('learning', 'interactive_lecture', 'Interactive Lecture', i)
@@ -69,6 +71,7 @@ def update_level(*args, **kwargs):
     MetadataOption.objects.filter(group='level', title="Primary School").update(title="Primary")
     MetadataOption.objects.filter(group='level', title="Secondary School").update(title="Secondary")
     m = MetadataOption.objects.filter(group='level').aggregate(models.Max('position'))['position__max']
+    m = 0 if not m else m
     add('level', 'other', 'Other', m+1)
 
 
@@ -83,6 +86,7 @@ def update_location(*arg, **kwargs):
     MetadataOption.objects.filter(group='location', code="indoors_small").update(title="Small Indoor Setting (e.g. classroom)")
     MetadataOption.objects.filter(group='location', code="indoors_large").update(title="Large Indoor Setting (e.g. school hall)")
     m = MetadataOption.objects.filter(group='location').aggregate(models.Max('position'))['position__max']
+    m = 0 if not m else m
     add('location', 'computer_laboratory', 'Computer Laboratory', m + 1)
     add('location', 'science_laboratory', 'Science Laboratory', m + 2)
     add('location', 'does_not_matter', 'Does not matter', m + 3)

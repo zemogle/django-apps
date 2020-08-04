@@ -138,12 +138,12 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='authorinstitution',
             name='author',
-            field=models.ForeignKey(to='institutions.Person'),
+            field=models.ForeignKey(to='institutions.Person', on_delete=models.CASCADE),
         ),
         migrations.AlterField(
             model_name='authorinstitution',
             name='institution',
-            field=models.ForeignKey(to='institutions.Institution'),
+            field=models.ForeignKey(to='institutions.Institution', on_delete=models.CASCADE),
         ),
         migrations.AlterField(
             model_name='collection',
@@ -159,12 +159,12 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='collectiontranslation',
             name='master',
-            field=models.ForeignKey(to='activities.Collection', related_name='translations', null=True),
+            field=models.ForeignKey(to='activities.Collection', related_name='translations', null=True, on_delete=models.CASCADE),
         ),
         migrations.AddField(
             model_name='activitytranslation',
             name='master',
-            field=models.ForeignKey(to='activities.Activity', related_name='translations', null=True),
+            field=models.ForeignKey(to='activities.Activity', related_name='translations', null=True, on_delete=models.CASCADE),
         ),
         migrations.AlterUniqueTogether(
             name='activitytranslation',

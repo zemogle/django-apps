@@ -17,7 +17,7 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(primary_key=True, serialize=False, verbose_name='ID', auto_created=True)),
                 ('type', models.IntegerField(choices=[(0, 'Other'), (1, 'Video')], default=0)),
                 ('main', models.BooleanField(default=False)),
-                ('activity', models.ForeignKey(to='activities.Activity')),
+                ('activity', models.ForeignKey(to='activities.Activity', on_delete=models.CASCADE)),
             ],
             options={
                 'abstract': False,
@@ -30,7 +30,7 @@ class Migration(migrations.Migration):
                 ('language_code', models.CharField(max_length=15, db_index=True, verbose_name='Language')),
                 ('title', models.CharField(blank=True, max_length=64)),
                 ('url', models.CharField(max_length=255)),
-                ('master', models.ForeignKey(null=True, related_name='translations', to='activities.Link')),
+                ('master', models.ForeignKey(null=True, related_name='translations', to='activities.Link', on_delete=models.CASCADE)),
             ],
         ),
         migrations.AlterField(

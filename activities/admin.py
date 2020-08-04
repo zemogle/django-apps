@@ -3,7 +3,7 @@ from urllib.parse import urljoin
 import unicodecsv
 
 from django import forms
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.conf import settings
 from django.contrib import admin
 from django.db import models
@@ -184,7 +184,7 @@ def activities_csv(modeladmin, request, queryset):
                             reverse('activities:detail', kwargs={'code': activity.code, 'slug': activity.slug}))
         else:
             url_fr = ''
-            
+
         if activity.has_translation('de'):
             translation.activate('de')
             activity.set_current_language('de')

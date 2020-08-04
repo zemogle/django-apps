@@ -21,7 +21,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='activity',
             name='country',
-            field=models.ForeignKey(to='institutions.Location', default=1, verbose_name='Country(s)'),
+            field=models.ForeignKey(to='institutions.Location', default=1, verbose_name='Country(s)', on_delete=models.CASCADE),
             preserve_default=False,
         ),
         migrations.AddField(

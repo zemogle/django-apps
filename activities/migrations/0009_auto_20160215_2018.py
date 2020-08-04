@@ -51,7 +51,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='repositoryentry',
             name='repo',
-            field=models.ForeignKey(blank=True, null=True, to='activities.Repository'),
+            field=models.ForeignKey(blank=True, null=True, to='activities.Repository', on_delete=models.CASCADE),
         ),
 
         migrations.RunPython(move_repo),
@@ -63,7 +63,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='repositoryentry',
             name='repo',
-            field=models.ForeignKey(to='activities.Repository', null=True),
+            field=models.ForeignKey(to='activities.Repository', null=True, on_delete=models.CASCADE),
         ),
 
     ]
